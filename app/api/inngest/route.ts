@@ -5,8 +5,7 @@ import { extractAndSavePDF } from "@/inngest/agent";
 // Create an API that serves zero functions
 export const { GET, POST, PUT } = serve({
   client: inngest,
-  functions: [
-    /* your functions will be passed here later! */
-    extractAndSavePDF
-  ],
+  functions: [extractAndSavePDF],
+  // Enable streaming for better production performance
+  streaming: "allow",
 });
