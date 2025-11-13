@@ -46,46 +46,57 @@ function ReceiptList() {
         )
     };
     return (
-        <div className="w-full ">
+        <div className="w-full">
             <h2 className="text-xl font-semibold mb-4">Your Receipts</h2>
             <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="w-[40px]"></TableHead>
-                            <TableHead>Name</TableHead>
-                            <TableHead>Uploaded</TableHead>
-                            <TableHead>Size</TableHead>
-                            <TableHead>Total</TableHead>
-                            <TableHead>Status</TableHead>
-                            <TableHead className="w-[40px]"></TableHead>
+                            <TableHead className="w-10"></TableHead>
+                            <TableHead className="w-[30%]">Name</TableHead>
+                            <TableHead className="w-[15%]">Uploaded</TableHead>
+                            <TableHead className="w-[10%]">Size</TableHead>
+                            <TableHead className="w-[15%]">Total</TableHead>
+                            <TableHead className="w-[15%]">Status</TableHead>
+                            <TableHead className="w-10"></TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody className="cursor-pointer">
                         {receipts.map((receipt: Doc<"receipts">) => (
-                            <TableRow key={receipt._id} className="hover:bg-gray-50"
+                            <TableRow
+                                key={receipt._id}
+                                className="hover:bg-gray-50"
                                 onClick={() => {
                                     router.push(`/receipt/${receipt._id}`);
                                 }}
                             >
-                                <TableCell className="py-2">
+                                <TableCell className="py-4 align-top">
                                     <FileText className="h-5 w-5 text-red-400" />
                                 </TableCell>
-                                <TableCell className="font-medium">
-                                    {receipt.fileDisplayName || receipt.fileName}
+                                <TableCell className="font-medium py-4 align-top">
+                                    <div className="wrap-break-word whitespace-normal">
+                                        {receipt.fileDisplayName || receipt.fileName}
+                                    </div>
                                 </TableCell>
-                                <TableCell >
-                                    {new Date(receipt.uploadedAt).toLocaleString()}
+                                <TableCell className="py-4 align-top whitespace-nowrap">
+                                    <div className="text-sm">
+                                        {new Date(receipt.uploadedAt).toLocaleDateString()}
+                                    </div>
+                                    <div className="text-xs text-gray-500">
+                                        {new Date(receipt.uploadedAt).toLocaleTimeString()}
+                                    </div>
                                 </TableCell>
-                                <TableCell>{formatFileSize(receipt.size)}</TableCell>
-                                <TableCell>
+                                <TableCell className="py-4 align-top whitespace-nowrap">
+                                    {formatFileSize(receipt.size)}
+                                </TableCell>
+                                <TableCell className="py-4 align-top whitespace-nowrap">
                                     {receipt.transactionAmount
-                                        ? `${receipt.transactionAmount} ${receipt.currency || ''}`
+                                        ? `${receipt.transactionAmount.toFixed(2)} ${receipt.currency || 'USD'}`
                                         : "-"}
                                 </TableCell>
-                                <TableCell>
+                                <TableCell className="py-4 align-top">
                                     <span
-                                        className={`px-2 py-1 rounded-full text-xs ${receipt.status === "pending"
+                                        className={`px-2 py-1 rounded-full text-xs inline-block ${receipt.status === "pending"
                                             ? "bg-yellow-100 text-yellow-800"
                                             : receipt.status === "processed"
                                                 ? "bg-green-100 text-green-800"
@@ -95,7 +106,7 @@ function ReceiptList() {
                                         {receipt.status.charAt(0).toUpperCase() + receipt.status.slice(1)}
                                     </span>
                                 </TableCell>
-                                <TableCell className="text-right">
+                                <TableCell className="py-4 align-top">
                                     <ChevronRight className="h-5 w-5 text-gray-400 ml-auto" />
                                 </TableCell>
                             </TableRow>
